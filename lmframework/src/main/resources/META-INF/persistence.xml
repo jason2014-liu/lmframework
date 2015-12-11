@@ -3,5 +3,13 @@
 	version="1.0">
 	<persistence-unit name="myUnit" transaction-type="RESOURCE_LOCAL">
 		<provider>org.hibernate.ejb.HibernatePersistence</provider>
+		<class>com.lmstudio.framework.hr.bo.Country</class>
+		<class>com.lmstudio.framework.hr.bo.Department</class>
+		<class>com.lmstudio.framework.hr.bo.Employee</class>
+		<class>com.lmstudio.framework.hr.bo.Job</class>
+		<class>com.lmstudio.framework.hr.bo.JobHistory</class>
+		<class>com.lmstudio.framework.hr.bo.JobHistoryPK</class>
+		<class>com.lmstudio.framework.hr.bo.Location</class>
+		<class>com.lmstudio.framework.hr.bo.Region</class>
 	</persistence-unit>
 </persistence>
