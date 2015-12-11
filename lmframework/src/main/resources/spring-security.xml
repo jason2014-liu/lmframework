@@ -1,0 +1,38 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+xmlns:security="http://www.springframework.org/schema/security"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://www.springframework.org/schema/beans
+http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+http://www.springframework.org/schema/security
+http://www.springframework.org/schema/security/spring-security-3.1.xsd">
+
+	<security:http pattern="/login.jsp" security="none" />
+		
+
+	<!-- The <http> element is the parent for all web-related namespace functionality -->
+	<!-- auto-config = true 想当于自动配置了<form-login /> <http-basic /><logout /> -->
+	<security:http auto-config="true">
+		<security:intercept-url pattern="/**" access="ROLE_ADMIN" />
+		<security:form-login login-page="/login.jsp" default-target-url="/home" always-use-default-target="true" />
+	</security:http>
+
+	<!-- 验证配置 ， 认证管理器，实现用户认证的入口-->
+	<security:authentication-manager>
+		<!-- The <authentication-provider>element creates a DaoAuthenticationProviderbean 
+			and the <user-service> element creates an InMemoryDaoImpl. -->
+		<security:authentication-provider user-service-ref="customUserDetailsService">
+		<!-- 
+			<security:user-service>
+				<security:user name="jimi" password="jimispassword"
+					authorities="ROLE_USER, ROLE_ADMIN" />
+				<security:user name="bob" password="bobspassword"
+					authorities="ROLE_USER" />
+			</security:user-service>
+			 -->
+		</security:authentication-provider>
+	</security:authentication-manager>
+	
+	<bean id="customUserDetailsService" class="com.lmstudio.framework.bss.security.CustomUserDetailsService"></bean>
+
+
+</beans>

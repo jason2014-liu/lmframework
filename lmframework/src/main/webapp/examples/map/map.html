@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+<style type="text/css">
+body, html {
+	width: 100%;
+	height: 100%;
+	overflow: hidden;
+	margin: 0;
+	font-family: "微软雅黑";
+}
+
+#allmap {
+	width: 70%;
+	height: 50%
+}
+</style>
+<script type="text/javascript"
+	src="http://api.map.baidu.com/api?v=2.0&ak=Tc41K9yQpl6lrKaYVPNT7O3Z"></script>
+	<script type="text/javascript" src="../../resources/js/jquery-1.11.1.js"></script>
+	<script type="text/javascript">
+	
+	
+		$(document).ready(function(){
+			
+			var map = new BMap.Map("allmap"); // 创建Map实例
+			map.centerAndZoom("上海", 13); // 初始化地图
+			
+			var myGeo = new BMap.Geocoder();
+			
+			// 编写自定义函数,创建标注
+			function addMarker(point, obj) {
+				var marker = new BMap.Marker(point);
+				map.addOverlay(marker);
+				//marker.setLabel(label);
+				marker.addEventListener("mouseover", function(e){
+					//var label = new BMap.Label(obj, {offset : new BMap.Size(20, -10)});
+					//marker.setLabel(label);
+					//marker.setTitle(obj);
+					
+					var opts = {    
+								 width : 250,     // 信息窗口宽度    
+								 height: 100,     // 信息窗口高度    
+								 title : "<a href='http://www.baidu.com'>许可信息</a><br/><a>检验检查</a><br/><a>监督检查</a>"  // 信息窗口标题   
+								}    
+					var infoWindow = new BMap.InfoWindow(obj, opts);  // 创建信息窗口对象    
+					marker.openInfoWindow(infoWindow, map.getCenter());      // 打开信息窗口
+				})
+				
+			}
+			
+			$("#queryBtn").click(function(){
+				var area = $("#area").val();
+				//alert(area);
+				if(area=="001"){
+					myGeo.getPoint("上海市黄埔区", function(point) {
+						if (point) {
+							map.panTo(point);
+							map.setZoom(15);
+						}
+					}, "上海市");
+					
+					//显示该行政区的对应企业
+					
+					var epts = new Array("黄浦区延安东路300号","上海市黄浦区安仁街","黄浦区人民大道201号(近武胜路)");
+					var index = 0;
+					for(index in epts){
+						//document.getElementById("result").innerHTML += index+ "、"+ epts[index];
+						(function(index){
+							myGeo.getPoint(epts[index], function(point) {
+								if (point) {
+									document.getElementById("result").innerHTML += index
+											+ "、"
+											+ epts[index]
+											+ ":"
+											+ point.lng
+											+ ","
+											+ point.lat + "</br>";
+									var address = new BMap.Point(point.lng,
+											point.lat);
+									addMarker(address,epts[index]);
+									/**
+									addMarker(address, new BMap.Label(index
+											+ ":" + epts[index], {
+										offset : new BMap.Size(20, -10)
+									}));
+									*/
+								}
+							}, "上海市");
+						})(index);
+						}
+					
+				}
+			});
+			
+		});
+	</script>
+<title>地图展示</title>
+</head>
+<body>
+	<div>
+		<div>
+			<select id="area">
+				<option value="001">黄埔区</option>
+				<option value="002">徐汇区</option>
+				<option value="003">长宁区</option>
+			</select>
+		</div>
+		<div>
+			<input id="queryBtn" type="button" value="查询"/>
+		</div>
+	</div>
+	<br/>
+	<br/>
+	<br/>
+	<div id="allmap"></div>
+	
+	<div id="result"></div>
+
+</body>
+</html>
+

@@ -1,0 +1,960 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
+<title>企信通短信接口说明文档</title>
+
+<style>
+td {
+	font-size:12px; line-height:200%; padding:0px; color:#333333;
+}
+.title_01 {
+	border-bottom:solid 1px #c0d7cf; padding:5px; font-size:20px; font-weight:bold; color:#5a5657;
+}
+.title_02 {
+	border-bottom:solid 1px #c0d7cf; padding:5px; font-size:16px; font-weight:bold; color:#1f6ea6;
+}
+.title_03 {
+	padding:5px; font-size:14px; font-weight:bold; color:#333333;
+}
+.table_01 {
+	background-color:#f39450;
+}
+.td_01 {
+	background-color:#fcd68d; text-align:center; font-weight:bold; padding:5px 10px;
+}
+.td_02 {
+	background-color:#fffcd9; padding:3px 10px;
+}
+.text_01 {
+	font-weight:bold; color:#0168b7;
+}
+.text_02 {
+	font-weight:bold; color:#ed7f42;
+}
+.warntext {
+	color:#b43675;
+}
+.menu {
+	padding:2px 10px;
+}
+.menu_01 {
+	padding:2px 10px;
+	font-weight:bold;
+}
+a {
+	color:#333333; text-decoration:none;
+}
+a:hover {
+	color:#0168b7; font-weight:bold; text-decoration:none;
+}
+</style>
+
+</head>
+
+<body bgcolor="#fffcd9">
+<table width="760" cellpadding="0" cellspacing="0" border="0" align="center">
+	<tr>
+		<td class="title_01"><a name="0">目录</a></td>
+	</tr>
+	<tr>
+		<td class="menu_01"><a href="#1">1、使用说明</a></td>
+	</tr>
+	<tr>
+		<td class="menu_01"><a href="#2">2、准备工作</a></td>
+	</tr>
+	<tr>
+		<td class="menu">　　<a href="#21">2.1　技术准备</a></td>
+	</tr>
+	<tr>
+		<td class="menu">　　<a href="#22">2.2　接入准备</a></td>
+	</tr>
+	<tr>
+		<td class="menu">　　<a href="#23">2.3　网络准备</a></td>
+	</tr>
+	<tr>
+		<td class="menu_01"><a href="#3">3、基于HTTP协议的接口</a></td>
+	</tr>
+	<tr>
+		<td class="menu">　　<a href="#31">3.1　基于HTTP协议的接口说明</a></td>
+	</tr>
+	<tr>
+		<td class="menu">　　<a href="#32">3.2　基于HTTP协议的方法</a></td>
+	</tr>
+	<tr>
+		<td class="menu">　　　　<a href="#321">3.2.1　发送短信</a></td>
+	</tr>
+	<tr>
+		<td class="menu">　　　　<a href="#322">3.2.2　查询余额</a></td>
+	</tr>
+	<tr>
+		<td class="menu">　　　　<a href="#323">3.2.3　短信内容检查</a></td>
+	</tr>
+	<tr>
+		<td class="menu">　　　　<a href="#324">3.2.4　敏感词下载</a></td>
+	</tr>
+	<tr>
+		<td class="menu">　　　　<a href="#325">3.2.5　推送状态报告</a></td>
+	</tr>
+	<tr>
+		<td class="menu">　　　　<a href="#326">3.2.6　推送回复信息</a></td>
+	</tr>
+	<tr>
+		<td class="menu">　　　　<a href="#327">3.2.7　发送彩信</a></td>
+	</tr>
+	
+	<tr>
+		<td class="menu_01"><a href="#4">4、错误代码及相应描述</a></td>
+	</tr>
+	<p><br/><br/></p>
+	<tr>
+		<td class="title_01"><a name="1">1、使用说明</a></td>
+	</tr>
+	<tr>
+		<td>
+		　　在使用短信业务平台提供的接口时，请仔细阅读本文档，这样会对接口的对接有一个比较全面的了解。<br>
+		<table border="0" cellpadding="0" cellspacing="0">
+		<tr>
+			<td width="50">　</td>
+			<td style="background:#D2EBEF; border:solid #C6DCDA 2px; padding:5px; font-weight:bold">熟悉SMS的<br>基本术语</td>
+			<td style="color:#2F557A; padding:5px;">→</td>
+			<td style="background:#D2EBEF; border:solid #C6DCDA 2px; padding:5px; font-weight:bold">对短信业务平台<br>有一个基本了解</td>
+			<td style="color:#2F557A; padding:5px;">→</td>
+			<td style="background:#D2EBEF; border:solid #C6DCDA 2px; padding:5px; font-weight:bold">了解接口提供的<br>属性、方法</td>
+			<td style="color:#2F557A; padding:5px;">→</td>
+			<td style="background:#D2EBEF; border:solid #C6DCDA 2px; padding:5px; font-weight:bold">在正式业务程序中<br>使用接口</td>
+			<td style="color:#2F557A; padding:5px;">→</td>
+			<td style="background:#D2EBEF; border:solid #C6DCDA 2px; padding:5px; font-weight:bold">解决出现的<br>错误</td>
+			<td style="color:#2F557A; padding:5px;">→</td>
+			<td style="background:#D2EBEF; border:solid #C6DCDA 2px; padding:5px; font-weight:bold">编写<br>测试程序</td>
+		</tr>
+		</table>
+		　　注：文档附带的编程代码仅为辅助说明使用，并不保证代码准确无误，任何使用手册附带的代码引起的错误后果与公司无关。
+		</td>
+	</tr>
+	<tr>
+		<td class="title_01"><a name="2">2、准备工作</a></td>
+	</tr>
+	<tr>
+		<td>
+		<table cellpadding="0" cellspacing="0" border="0" align="right">
+			<tr>
+				<td class="title_02"><a name="21">2.1　技术准备</a></td>
+			</tr>
+			<tr>
+				<td>
+　　短信业务平台接口是建立在HTTP协议的基础上的，所以要求使用短信业务平台接口的开发人员掌握HTTP协议，HTTP协议GET和POST的调用方法。使用程序语言获取HTTP调用页面源代码的方法。<br>
+　　支持的程序语言有：Power Builder、C、Visual C++、Virual Basic、ASP、Delphi、C++ Builder、Visual J++、C#。<br>
+　　业务程序的研发者需要按照自身业务程序的类型来正确选择合适的接口方法。详见基于HTTP协议的方法。
+				</td>
+			</tr>
+			<tr>
+				<td class="title_02"><a name="22">2.2　接入准备</a></td>
+			</tr>
+			<tr>
+				<td>
+　　在开始使用短信业务平台接口之前，需要正确的接入参数，包括：企业账号、账户密码。这些参数需要向公司申请。明确企业账户绑定使用的短信通道、常规单条短信的字数限制、绑定的通道是否支持长短信等相关信息。不恰当的接入参数将无法获取预期的效果，还会造成计费不一致。
+				</td>
+			</tr>
+			<tr>
+				<td class="title_02"><a name="23">2.3　网络准备</a></td>
+			</tr>
+			<tr>
+				<td>
+　　目前短信业务平台的使用发送短信端口号为：8080,接收回复信息端口为：8180。<span class="warntext">具有防火墙的公司需要将这2个端口打开，允许收发操作。</span>
+				</td>
+			</tr>
+		</table>
+		</td>
+	</tr>
+	<tr>
+		<td class="title_01"><a name="3">3、基于HTTP协议的接口</a></td>
+	</tr>
+	<tr>
+		<td>
+		<table cellpadding="0" cellspacing="0" border="0" align="right">
+			<tr>
+				<td class="title_02"><a name="31">3.1　基于HTTP协议的接口说明</a></td>
+			</tr>
+			<tr>
+				<td>
+　　为了降低客户的开发技术难度，根据客户需求，提供短信发送的HTTP接口。采用HTTP的GET(支持POST)方式进行消息的上传和下发。<br>
+　　客户与短信业务平台的交互方式<br>
+　　1、客户向短信业务平台主动提交需要处理的请求然后等待短信业务平台处理的结果，短信业务平台接收到此请求后进行处理，然后返回结果，客户此时可以接收到结果。<br>
+　　2、客户在程序或者IE中调用短信业务平台提供的接口时，以如下形式的URL进行调用。<br>
+　　http://211.151.85.133:端口号/xx.asp? aaa=111&bbb=222 <br><br>
+
+　　注意事项：<br>
+　　1、返回结果为纯文本方式。<br>
+　　2、在返回结果中，需要去除前后多余的空白行。<br>
+　　3、用于文本分割的分割符号均为英文半角字符，比如逗号和分号。<br>
+　　4、小灵通和手机号码分开提交发送，否则影响发送质量。
+				</td>
+			</tr>
+			<tr>
+				<td class="title_02"><a name="32">3.2　基于HTTP协议的方法</a></td>
+			</tr>
+			<tr>
+				<td>
+				<table cellpadding="0" cellspacing="0" border="0" align="right">
+					<tr>
+						<td class="title_03"><a name="321">3.2.1　发送短信</a></td>
+					</tr>
+					<tr>
+						<td>
+　　此接口页面供客户提交短信发送，支持单条短信和长短信的发送，支持客户自定义扩展号。<span class="warntext">单条短信的字数和扩展号支持的位数由使用的短信通道决定。短信内容使用GBK编码。</span><br>
+　　接口URL：http://211.151.85.133:8080/sendsms.asp<br><br>
+
+　　<span class="text_01">参数说明：</span><br>
+						</td>
+					</tr>
+					<tr>
+						<td>
+						<!--表格描述 开始-->
+						<table width="80%" cellpadding="0" cellspacing="2" border="0" align="center" class="table_01">
+							<tr>
+								<td width="20%" class="td_01">参数</td>
+								<td width="80%" class="td_01">说明</td>
+							</tr>
+							<tr>
+								<td class="td_02">username</td>
+								<td class="td_02">企业账号</td>
+							</tr>
+							<tr>
+								<td class="td_02">password</td>
+								<td class="td_02">账号对应的登录密码(明文)</td>
+							</tr>
+							<tr>
+								<td class="td_02">passwordMd5</td>
+								<td class="td_02">账号对应的登录密码（md5加密，16位）。<span class="warntext">password和passwordMd5参数只能选择其中一个对接，考虑安全性使用passwordMd5参数，快速对接使用password参数。</span></td>
+							</tr>
+							<tr>
+								<td class="td_02">mobile</td>
+								<td class="td_02">该参数用可以包含多个号码，格式为目标号码+逗号,可以重复出现多次，一次提交号码个数不要超过5000个。因为小灵通号码不支持长短信，所以小灵通号码和其他号码分开提交发送。</td>
+							</tr>
+							<tr>
+								<td class="td_02">message</td>
+								<td class="td_02">需要发送的短信内容（GBK编码）。<span class="warntext">支持长短信（小灵通号码除外），长短信一般不超过3条短信长度。单条短信的字数、长短信每条的计费字数和支持的最大字数由使用的短信通道决定。</span></td>
+							</tr>
+							<tr>
+								<td class="td_02">Ext</td>
+								<td class="td_02">扩展号，支持的位数视具体业务而定</td>
+							</tr>
+						</table>
+						<!--表格描述 结束-->
+						</td>
+					</tr>
+					<tr>
+						<td>
+　
+返回结果以页面源码方式返回：<br>
+　　第一个非空白行为错误码<br>
+　　第二个非空白行为错误信息提示。<br>
+					  </td>
+					</tr>
+						<td>
+　　<span class="text_01">返回结果以页面源码方式返回：</span>
+						</td>
+					<tr>
+						<td>
+						<!--表格描述 开始-->
+						<table width="80%" cellpadding="0" cellspacing="2" border="0" align="center" class="table_01">
+							<tr>
+								<td width="20%" class="td_01">返回值</td>
+								<td width="80%" class="td_01">描述</td>
+							</tr>
+							<tr>
+								<td class="td_02">&gt;0</td>
+								<td class="td_02">成功，短信批次号</td>
+							</tr>
+							<tr>
+								<td class="td_02">-1</td>
+								<td class="td_02">账号或者密码错误</td>
+							</tr>
+							<tr>
+								<td class="td_02">-2</td>
+								<td class="td_02">缺少企业账号</td>
+							</tr>
+							<tr>
+								<td class="td_02">-3</td>
+								<td class="td_02">缺少密码</td>
+							</tr>
+							<tr>
+								<td class="td_02">-4</td>
+								<td class="td_02">缺少短信内容</td>
+							</tr>
+							<tr>
+								<td class="td_02">-5</td>
+								<td class="td_02">缺少目标号码</td>
+							</tr>
+							<tr>
+								<td class="td_02">-7</td>
+								<td class="td_02">短信内容过长(小灵通最大56个字)</td>
+							</tr>
+							<tr>
+								<td class="td_02">-8</td>
+								<td class="td_02">含有非法字符，第二行返回非法关键词</td>
+							</tr>
+							<tr>
+								<td class="td_02">-9</td>
+								<td class="td_02">目标号码格式错误，或者包含错误的手机号码</td>
+							</tr>
+							<tr>
+								<td class="td_02">-10</td>
+								<td class="td_02">超过规定发送时间，禁止提交发送</td>
+							</tr>
+							<tr>
+								<td class="td_02">-12</td>
+								<td class="td_02">余额不足</td>
+							</tr>
+							<tr>
+								<td class="td_02">-14</td>
+								<td class="td_02">号码超过发送数量限制</td>
+							</tr>
+							<tr>
+								<td class="td_02">-15</td>
+								<td class="td_02">发送内容前面需加签名，例如【XXX公司】，签名必须放在最前面，如果内容的编码错误，出现乱码，识别不出签名【XXX公司】，也会返回-15</td>
+							</tr>
+							<tr>
+								<td class="td_02">-16</td>
+								<td class="td_02">提交号码数量小于最小提交量限制</td>
+							</tr>
+							<tr>
+								<td class="td_02">-20</td>
+								<td class="td_02">未开通接口</td>
+							</tr>
+							<tr>
+								<td class="td_02">-22</td>
+								<td class="td_02">短信内容签名不正确</td>
+							</tr>
+							<tr>
+								<td class="td_02">-99</td>
+								<td class="td_02">连接失败</td>
+							</tr>
+							<tr>
+								<td class="td_02">-100</td>
+								<td class="td_02">系统内部错误</td>
+							</tr>
+						</table>
+						<!--表格描述 结束-->
+						</td>
+					</tr>
+					<tr>
+						<td>
+　　<span class="text_02">调用接口示例，可以在IE中直接输入测试：</span><br>
+　　1.发送单条短信(短信内容为：测试发送)：<br>
+　　http://211.151.85.133:8080/sendsms.asp?username=test133&password=123789&mobile=13000000000&message=测试发送 <br>
+　　2.发送多条短信(短信内容为：测试发送)：<br>
+　　http://211.151.85.133:8080/sendsms.asp?username=test133&password=123789&mobile=13000000000,03119876619,031198765455,13515026937&message=测试发送 <br><br>
+
+　　<span class="text_02">返回结果示例：</span><br>
+　　-1
+						</td>
+					</tr>
+					<tr>
+						<td class="title_03"><a name="322">3.2.2　查询余额</a></td>
+					</tr>
+					<tr>
+						<td>
+　　此接口页面供客户查询可用余额。<br>
+　　接口URL：http://211.151.85.133:8080/getBalance.asp<br><br>
+
+　　<span class="text_01">参数说明：</span><br>
+						</td>
+					</tr>
+					<tr>
+						<td>
+						<!--表格描述 开始-->
+						<table width="80%" cellpadding="0" cellspacing="2" border="0" align="center" class="table_01">
+							<tr>
+								<td width="20%" class="td_01">参数</td>
+								<td width="80%" class="td_01">说明</td>
+							</tr>
+							<tr>
+								<td class="td_02">username</td>
+								<td class="td_02">企业账号</td>
+							</tr>
+							<tr>
+								<td class="td_02">password</td>
+								<td class="td_02">账号对应的登录密码(明文)</td>
+							</tr>
+							<tr>
+								<td class="td_02">passwordMd5</td>
+								<td class="td_02">账号对应的登录密码（md5加密，16位）。<span class="warntext">password和passwordMd5参数只能选择其中一个对接，考虑安全性使用passwordMd5参数，快速对接使用password参数。</span></td>
+							</tr>
+							<tr>
+								<td class="td_02">type</td>
+								<td class="td_02">产品类型，短信：111，彩信：112</td>
+							</tr>	
+						</table>
+						<!--表格描述 结束-->
+						</td>
+					</tr>
+					<tr>
+						<td>
+　　<span class="text_01">返回结果以页面源码方式返回：</span><br>
+						</td>
+					</tr>
+					<tr>
+						<td>
+						<!--表格描述 开始-->
+						<table width="80%" cellpadding="0" cellspacing="2" border="0" align="center" class="table_01">
+							<tr>
+								<td width="20%" class="td_01">返回值</td>
+								<td width="80%" class="td_01">说明</td>
+							</tr>
+							<tr>
+								<td class="td_02">>0</td>
+								<td class="td_02">成功，短/彩信余额（条数）</td>
+							</tr>
+							<tr>
+								<td class="td_02">-1</td>
+								<td class="td_02">账号或者密码错误</td>
+							</tr>
+							<tr>
+								<td class="td_02">-2</td>
+								<td class="td_02">缺少企业账号</td>
+							</tr>
+							<tr>
+								<td class="td_02">-3</td>
+								<td class="td_02">缺少密码</td>
+							</tr>
+							<tr>
+								<td class="td_02">-11</td>
+								<td class="td_02">产品类型错误</td>
+							</tr>
+							<tr>
+								<td class="td_02">-17</td>
+								<td class="td_02">查询速度过快</td>
+							</tr>
+							<tr>
+								<td class="td_02">-20</td>
+								<td class="td_02">未开通接口</td>
+							</tr>
+							<tr>
+								<td class="td_02">-99</td>
+								<td class="td_02">连接失败</td>
+							</tr>
+							<tr>
+								<td class="td_02">-100</td>
+								<td class="td_02">系统内部错误</td>
+							</tr>
+						</table>
+						<!--表格描述 结束-->
+						</td>
+					</tr>
+					<tr>
+						<td>
+　　<span class="text_02">调用接口示例，可以在IE中直接输入测试：</span><br>
+　　http://211.151.85.133:8080/getBalance.asp?username=test133&password=123789 <br><br>
+
+　　<span class="text_02">返回结果示例：</span><br>
+　　1982
+						</td>
+					</tr>
+					<tr>
+						<td class="title_03"><a name="323">3.2.3　短信内容检查</a></td>
+					</tr>
+					<tr>
+						<td>
+　　此接口页面用于检查短信内容是否包含非法关键词。<br>
+　　接口URL：http://211.151.85.133:8080/checkContent.asp<br><br>
+
+　　<span class="text_01">参数说明：</span><br>
+						</td>
+					</tr>
+					<tr>
+						<td>
+						<!--表格描述 开始-->
+						<table width="80%" cellpadding="0" cellspacing="2" border="0" align="center" class="table_01">
+							<tr>
+								<td width="20%" class="td_01">参数</td>
+								<td width="80%" class="td_01">说明</td>
+							</tr>
+							<tr>
+								<td class="td_02">message</td>
+								<td class="td_02">需要检查的短信内容。</td>
+							</tr>
+						</table>
+						<!--表格描述 结束-->
+						</td>
+					</tr>
+					<tr>
+						<td>
+　　<span class="text_01">返回结果以页面源码方式返回：</span><br>
+						</td>
+					</tr>
+					<tr>
+						<td>
+						<!--表格描述 开始-->
+						<table width="80%" cellpadding="0" cellspacing="2" border="0" align="center" class="table_01">
+							<tr>
+								<td width="20%" class="td_01">返回结果</td>
+								<td width="80%" class="td_01">说明</td>
+							</tr>
+							<tr>
+								<td class="td_02">非空字符串</td>
+								<td class="td_02">屏蔽关键词</td>
+							</tr>
+							<tr>
+								<td class="td_02">-99</td>
+								<td class="td_02">连接失败</td>
+							</tr>
+							<tr>
+								<td class="td_02">-100</td>
+								<td class="td_02">系统内部错误</td>
+							</tr>
+						</table>
+						<!--表格描述 结束-->
+						</td>
+					</tr>
+					<tr>
+						<td>
+　　<span class="text_02">调用接口示例，可以在IE中直接输入测试：</span><br>
+　　http://211.151.85.133:8080/checkContent.asp?message=屏蔽内容发票<br><br>
+
+　　<span class="text_02">返回结果示例：</span><br>
+　　发票
+						</td>
+					</tr>
+					<tr>
+						<td class="title_03"><a name="324">3.2.4　敏感词下载</a></td>
+					</tr>
+					<tr>
+						<td>
+　　此接口页面供客户下载敏感词。<br>
+　　接口URL：http://211.151.85.133:8080/getForbitWord.asp<br><br>
+
+　　<span class="text_01">参数说明：</span><br>
+						</td>
+					</tr>
+					<tr>
+						<td>
+						<!--表格描述 开始-->
+						<table width="80%" cellpadding="0" cellspacing="2" border="0" align="center" class="table_01">
+							<tr>
+								<td width="20%" class="td_01">参数</td>
+								<td width="80%" class="td_01">说明</td>
+							</tr>
+							<tr>
+								<td class="td_02">username</td>
+								<td class="td_02">企业账号</td>
+							</tr>
+							<tr>
+								<td class="td_02">password</td>
+								<td class="td_02">账号对应的登录密码(明文)</td>
+							</tr>
+							<tr>
+								<td class="td_02">passwordMd5</td>
+								<td class="td_02">账号对应的登录密码（md5加密，16位）。<span class="warntext">password和passwordMd5参数只能选择其中一个对接，考虑安全性使用passwordMd5参数，快速对接使用password参数。</span></td>
+							</tr>
+						</table>
+						<!--表格描述 结束-->
+						</td>
+					</tr>
+					<tr>
+						<td>
+　　<span class="text_01">返回结果以页面源码方式返回：</span><br>
+						</td>
+					</tr>
+					<tr>
+						<td>
+						<!--表格描述 开始-->
+						<table width="80%" cellpadding="0" cellspacing="2" border="0" align="center" class="table_01">
+							<tr>
+								<td width="20%" class="td_01">返回结果</td>
+								<td width="80%" class="td_01">说明</td>
+							</tr>
+							<tr>
+								<td class="td_02">非空字符串</td>
+								<td class="td_02">敏感词列表（<span class="warntext">一行一个敏感词</span>）</td>
+							</tr>
+							<tr>
+								<td class="td_02">-1</td>
+								<td class="td_02">账号或者密码错误</td>
+							</tr>
+							<tr>
+								<td class="td_02">-2</td>
+								<td class="td_02">缺少企业账号</td>
+							</tr>
+							<tr>
+								<td class="td_02">-3</td>
+								<td class="td_02">缺少密码</td>
+							</tr>
+							<tr>
+								<td class="td_02">-17</td>
+								<td class="td_02">查询速度过快</td>
+							</tr>
+							<tr>
+								<td class="td_02">-20</td>
+								<td class="td_02">未开通接口</td>
+							</tr>
+							<tr>
+								<td class="td_02">-99</td>
+								<td class="td_02">连接失败</td>
+							</tr>
+							<tr>
+								<td class="td_02">-100</td>
+								<td class="td_02">系统内部错误</td>
+							</tr>
+						</table>
+						<!--表格描述 结束-->
+						</td>
+					</tr>
+					<tr>
+						<td>
+　　<span class="text_02">调用接口示例，可以在IE中直接输入测试：</span><br>
+　　http://211.151.85.133:8080/getForbitWord.asp?username=test133&password=123789 <br><br>
+
+　　<span class="text_02">返回结果示例：</span><br>
+　　发票
+						</td>
+					</tr>
+					<tr>
+						<td class="title_03"><a name="325">3.2.5　推送状态报告</a></td>
+					</tr>
+					<tr>
+						<td>
+　　此接口推送状态报告给客户，客户必须先提供推送地址，我们后台绑定后，通过post的方式推送到绑定地址。推送的参数为&quot;xml&quot;，推送内容为xml格式文本。<p>　　<span class="warntext">注意：<br>
+</span>　　<span class="warntext">1.xml文本使用utf-8编码；<br>
+</span>　　<span class="warntext">2.接收成功后需要返回 
+0，返回的格式是纯文本，不能包含HTML标签。如果返回其他值，则认为发送失败， 还会再次重发；<br>
+</span>　　<span class="warntext">3.必须在30秒后返回响应， 否则认为发送超时， 还会再次重发。</span><br>
+　　推送示例：http://绑定地址?xml=推送内容(xml格式文本,utf-8编码)<br>
+					  </td>
+					</tr>
+					<tr>
+						<td>
+　　<span class="text_01">XML文档格式如下：</span><br>
+<div style="padding-left:50px">
+&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; ?&gt; <br>
+&lt;Response&gt;<br>
+&nbsp; &lt;Report&gt;<br>
+&nbsp;&nbsp;&nbsp; &lt;MsgID&gt;短信批次号&lt;/MsgID&gt; <br>
+&nbsp;&nbsp;&nbsp; &lt;Mobile&gt;手机号码&lt;/Mobile&gt; <br>
+&nbsp;&nbsp;&nbsp; &lt;Status&gt;状态&lt;/Status&gt; <br>
+&nbsp; &lt;/Report&gt;<br>
+&nbsp; &lt;Report&gt;<br>
+&nbsp;&nbsp;&nbsp; &lt;MsgID&gt;短信批次号&lt;/MsgID&gt; <br>
+&nbsp;&nbsp;&nbsp; &lt;Mobile&gt;手机号码&lt;/Mobile&gt; <br>
+&nbsp;&nbsp;&nbsp; &lt;Status&gt;状态（DELIVRD表示成功，其他值为失败）&lt;/Status&gt; <br>
+&nbsp; &lt;/Report&gt;<br>
+&lt;/Response&gt;</div>
+						</td>
+					</tr>
+					<tr>
+						<td class="title_03"><a name="326">3.2.6　推送回复信息</a></td>
+					</tr>
+					<td>
+　　此接口推送回复信息给客户，客户必须先提供推送地址，我们后台绑定后，通过post的方式推送到绑定地址。推送的参数为&quot;xml&quot;，推送内容为xml格式文本。<p>
+　　<span class="warntext">注意：<br>
+</span>　　<span class="warntext">1.xml文本使用utf-8编码；<br>
+</span>　　<span class="warntext">2.接收成功后需要返回 
+0，返回的格式是纯文本，不能包含HTML标签。如果返回其他值，则认为发送失败， 还会再次重发；<br>
+</span>　　<span class="warntext">3.必须在30秒后返回响应， 否则认为发送超时， 还会再次重发。</span><br>
+　　推送示例：http://绑定地址?xml=推送内容(xml格式文本,utf-8编码)<br>
+						</td>
+					</tr>
+					<tr>
+						<td>
+　　<span class="text_01">XML文档格式如下：</span><br>
+<div style="padding-left:50px">
+<blockquote>
+&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; ?&gt; <br>&lt;Response&gt;<br>&nbsp; &lt;MO&gt;<br>&nbsp;&nbsp;&nbsp; &lt;Mobile&gt;手机号码&lt;/Mobile&gt; 
+	<br />&nbsp;&nbsp;&nbsp; &lt;Message&gt;&lt;![CDATA[ 回复内容（utf-8编码）]]&gt;&lt;/Message&gt;<br />&nbsp;&nbsp;&nbsp; &lt;ReceiveTime&gt;回复时间（格式：2012-01-12 15:23:12）&lt;/ReceiveTime&gt;
+	<br />&nbsp;&nbsp;&nbsp; &lt;ExtendCode&gt;扩展号&lt;/ExtendCode&gt; <br>&nbsp;&nbsp;&nbsp; &lt;MsgID&gt;短信批次号
+	（有可能为空字符）&lt;/MsgID&gt; <br>&nbsp; &lt;/MO&gt;<br>&nbsp; &lt;MO&gt;<br>&nbsp;&nbsp;&nbsp; &lt;Mobile&gt;手机号码&lt;/Mobile&gt; 
+	<br />&nbsp;&nbsp;&nbsp; &lt;Message&gt;&lt;![CDATA[ 回复内容（utf-8编码）]]&gt;&lt;/Message&gt;<br />&nbsp;&nbsp;&nbsp; &lt;ReceiveTime&gt;回复时间（格式：2012-01-12 15:23:12）&lt;/ReceiveTime&gt;
+	<br />&nbsp;&nbsp;&nbsp; &lt;ExtendCode&gt;扩展号&lt;/ExtendCode&gt; <br>&nbsp;&nbsp;&nbsp; &lt;MsgID&gt;短信批次号
+	（有可能为空字符）&lt;/MsgID&gt; <br>&nbsp; &lt;/MO&gt;<br>&lt;/Response&gt;</blockquote>
+</div>
+						</td>
+					</tr>
+					</table>
+				</td>
+			</tr>
+					<tr>
+						<td class="title_03"><a name="327">3.2.7　发送彩信</a></td>
+					</tr>
+					<tr>
+						<td>
+　　此接口页面供客户提交彩信发送，以<span class="warntext">xml格式POSE方式</span>提交彩信，支持客户自定义扩展号。<span class="warntext">扩展号支持的位数由使用的彩信通道决定。彩信标题长度不超过30个字符，彩信标题和帧内的文本文件使用GBK编码。</span><br>
+　　接口URL：http://211.151.85.133:8080/sendmms.asp<br><br>
+
+　　<span class="text_01">参数说明：</span><br>
+						</td>
+					</tr>
+					<tr>
+						<td>
+						<!--表格描述 开始-->
+						<table width="80%" cellpadding="0" cellspacing="2" border="0" align="center" class="table_01">
+							<tr>
+								<td width="20%" class="td_01">参数</td>
+								<td width="80%" class="td_01">说明</td>
+							</tr>
+							<tr>
+								<td class="td_02">username</td>
+								<td class="td_02">企业账号</td>
+							</tr>
+							<tr>
+								<td class="td_02">password</td>
+								<td class="td_02">账号对应的登录密码(明文)</td>
+							</tr>
+							<tr>
+								<td class="td_02">passwordMd5</td>
+								<td class="td_02">账号对应的登录密码（md5加密，16位）。<span class="warntext">password和passwordMd5参数只能选择其中一个对接，考虑安全性使用passwordMd5参数，快速对接使用password参数。</span></td>
+							</tr>
+							<tr>
+								<td class="td_02">mobile</td>
+								<td class="td_02">该参数用可以包含多个号码，格式为目标号码+逗号,可以重复出现多次，一次提交号码个数不要超过1000个。</td>
+							</tr>
+							<tr>
+								<td class="td_02">title</td>
+								<td class="td_02">需要发送的彩信标题（<span class="warntext">GBK编码</span>）。</td>
+							</tr>
+							<tr>
+								<td class="td_02">Ext</td>
+								<td class="td_02">扩展号，支持的位数视具体业务而定</td>
+							</tr>
+							<tr>
+								<td class="td_02">TmsBuffer</td>
+								<td class="td_02">彩信tms格式内容,参见“TMS文件格式说明”(<a href="tmfSample.rar" style="text-decoration: underline"><font color="#0000FF">点击下载</font></a>)。
+								编码成16进制的文本，每个字节用两位16进制表示，如：A12b，编码成：41313262</td>
+							</tr>
+
+						</table>
+						<!--表格描述 结束-->
+						</td>
+					</tr>
+					<tr>
+						<td style="word-break:break-all; word-wrap:break-all;">
+<b>请求xml示例：</b><br>
+&lt;?xml version=&quot;1.0&quot;?&gt;<br>
+&lt;mmsBean&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&lt;username&gt;test133&lt;/username&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&lt;password&gt;123789&lt;/password&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&lt;mobile&gt;13000000000&lt;/mobile&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&lt;title&gt;测试彩信&lt;/title&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&lt;Ext&gt;0001&lt;/Ext&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&lt;TmsHexBuffer&gt;312E7478740008000000B2CAD0C5CEC4B1BE6D6D732E736D696C002A0100003C736D696C3E0D0A3C686561643E0D0A3C6D657461206E616D653D227469746C652220636F6E74656E743D22B2E2CAD4222F3E0D0A3C6C61796F75743E0D0A3C726F6F742D6C61796F75742077696474683D22333230707822206865696768743D22323430707822202F3E0D0A3C726567696F6E2069643D2254657874222077696474683D223130302522206865696768743D223130302522206C6566743D223070782220746F703D2230707822206669743D227363726F6C6C22202F3E0D0A3C2F6C61796F75743E0D0A3C2F686561643E0D0A3C626F64793E0D0A3C706172206475723D223573223E0D0A3C7465787420726567696F6E3D225465787422207372633D22312E74787422202F3E0D0A3C2F7061723E0D0A3C2F626F64793E0D0A3C2F736D696C3E0D0A&lt;/TmsHexBuffer&gt;<br>
+&lt;/mmsBean&gt;
+<br><b>返回结果以页面源码方式返回：</b><br>
+　　第一个非空白行为错误码<br>
+　　第二个非空白行为错误信息提示。<br>
+					  </td>
+					</tr>
+						<td>
+　　<span class="text_01">返回结果以页面源码方式返回：</span>
+						</td>
+					<tr>
+						<td>
+						<!--表格描述 开始-->
+						<table width="80%" cellpadding="0" cellspacing="2" border="0" align="center" class="table_01">
+							<tr>
+								<td width="20%" class="td_01">返回值</td>
+								<td width="80%" class="td_01">描述</td>
+							</tr>
+							<tr>
+								<td class="td_02">&gt;0</td>
+								<td class="td_02">成功，短信批次号</td>
+							</tr>
+							<tr>
+								<td class="td_02">-1</td>
+								<td class="td_02">账号或者密码错误</td>
+							</tr>
+							<tr>
+								<td class="td_02">-2</td>
+								<td class="td_02">缺少企业账号</td>
+							</tr>
+							<tr>
+								<td class="td_02">-3</td>
+								<td class="td_02">缺少密码</td>
+							</tr>
+							<tr>
+								<td class="td_02">-4</td>
+								<td class="td_02">缺少彩信标题</td>
+							</tr>
+							<tr>
+								<td class="td_02">-5</td>
+								<td class="td_02">缺少目标号码</td>
+							</tr>
+							<tr>
+								<td class="td_02">-7</td>
+								<td class="td_02">彩信标题过长(最大30个字符)</td>
+							</tr>
+							<tr>
+								<td class="td_02">-8</td>
+								<td class="td_02">彩信标题含有非法字符，第二行返回非法关键词</td>
+							</tr>
+							<tr>
+								<td class="td_02">-9</td>
+								<td class="td_02">目标号码格式错误，或者包含错误的手机号码</td>
+							</tr>
+							<tr>
+								<td class="td_02">-10</td>
+								<td class="td_02">超过规定发送时间，禁止提交发送</td>
+							</tr>
+							<tr>
+								<td class="td_02">-12</td>
+								<td class="td_02">余额不足</td>
+							</tr>
+							<tr>
+								<td class="td_02">-15</td>
+								<td class="td_02">彩信标题前面需加签名，例如【XXX公司】
+								，签名必须放在最前面，如果内容的编码错误，出现乱码，识别不出签名【XXX公司】，也会返回-15</td>
+							</tr>
+							<tr>
+								<td class="td_02">-16</td>
+								<td class="td_02">提交号码数量小于最小提交量限制</td>
+							</tr>
+							<tr>
+								<td class="td_02">-18</td>
+								<td class="td_02">tms文件格式错误</td>
+							</tr>
+							<tr>
+								<td class="td_02">-20</td>
+								<td class="td_02">未开通接口</td>
+							</tr>
+							<tr>
+								<td class="td_02">-22</td>
+								<td class="td_02">彩信标题签名不正确</td>
+							</tr>							
+							<tr>
+								<td class="td_02">-99</td>
+								<td class="td_02">连接失败</td>
+							</tr>
+							<tr>
+								<td class="td_02">-100</td>
+								<td class="td_02">系统内部错误</td>
+							</tr>
+						</table>
+						<!--表格描述 结束-->
+						</td>
+					</tr>
+					<tr>
+						<td style="word-break:break-all; word-wrap:break-all;">
+　　<span class="text_02">调用接口示例：</span><br>
+　　http://211.151.85.133:8080/sendmms.asp?&lt;?xml version=&quot;1.0&quot;?&gt;&lt;mmsBean&gt;&lt;username&gt;test133&lt;/username&gt;&lt;password&gt;123789&lt;/password&gt;&lt;mobile&gt;13000000000&lt;/mobile&gt;&lt;title&gt;测试彩信&lt;/title&gt;&lt;Ext&gt;0001&lt;/Ext&gt;&lt;TmsHexBuffer&gt;312E7478740008000000B2CAD0C5CEC4B1BE6D6D732E736D696C002A0100003C736D696C3E0D0A3C686561643E0D0A3C6D657461206E616D653D227469746C652220636F6E74656E743D22B2E2CAD4222F3E0D0A3C6C61796F75743E0D0A3C726F6F742D6C61796F75742077696474683D22333230707822206865696768743D22323430707822202F3E0D0A3C726567696F6E2069643D2254657874222077696474683D223130302522206865696768743D223130302522206C6566743D223070782220746F703D2230707822206669743D227363726F6C6C22202F3E0D0A3C2F6C61796F75743E0D0A3C2F686561643E0D0A3C626F64793E0D0A3C706172206475723D223573223E0D0A3C7465787420726567696F6E3D225465787422207372633D22312E74787422202F3E0D0A3C2F7061723E0D0A3C2F626F64793E0D0A3C2F736D696C3E0D0A&lt;/TmsHexBuffer&gt;&lt;/mmsBean&gt; <br><br>
+
+　　<span class="text_02">返回结果示例：</span><br>
+　　-1
+						</td>
+					</tr>
+	
+			<tr>
+				<td class="title_01"><a name="4">4、错误代码及相应描述</a></td>
+			</tr>
+			<tr>
+				<td>
+				<!--表格描述 开始-->
+				<table width="80%" cellpadding="0" cellspacing="2" border="0" align="center" class="table_01">
+					<tr>
+						<td width="20%" class="td_01">结果代码</td>
+						<td width="80%" class="td_01">描述</td>
+					</tr>
+					<tr>
+						<td class="td_02">&gt;0</td>
+						<td class="td_02">成功</td>
+					</tr>
+					<tr>
+						<td class="td_02">-1</td>
+						<td class="td_02">账号或者密码错误</td>
+					</tr>
+					<tr>
+						<td class="td_02">-2</td>
+						<td class="td_02">缺少企业账号</td>
+					</tr>
+					<tr>
+						<td class="td_02">-3</td>
+						<td class="td_02">缺少密码</td>
+					</tr>
+					<tr>
+						<td class="td_02">-4</td>
+						<td class="td_02">缺少短信内容(彩信标题)</td>
+					</tr>
+					<tr>
+						<td class="td_02">-5</td>
+						<td class="td_02">缺少目标号码</td>
+					</tr>
+					<tr>
+						<td class="td_02">-6</td>
+						<td class="td_02">缺少产品类型</td>
+					</tr>
+					<tr>
+						<td class="td_02">-7</td>
+						<td class="td_02">短信内容过长(小灵通最大56个字)，或彩信标题过长(最大30个字符)</td>
+					</tr>
+					<tr>
+						<td class="td_02">-8</td>
+						<td class="td_02">短信内容(彩信标题)含有非法字符，第二行返回非法关键词</td>
+					</tr>
+					<tr>
+						<td class="td_02">-9</td>
+						<td class="td_02">目标号码格式错误</td>
+					</tr>
+					<tr>
+						<td class="td_02">-10</td>
+						<td class="td_02">超过规定发送时间，禁止提交发送</td>
+					</tr>
+					<tr>
+						<td class="td_02">-11</td>
+						<td class="td_02">产品类型错误</td>
+					</tr>
+					<tr>
+						<td class="td_02">-12</td>
+						<td class="td_02">余额不足</td>
+					</tr>
+					<tr>
+						<td class="td_02">-14</td>
+						<td class="td_02">号码超过发送数量限制</td>
+					</tr>
+					<tr>
+						<td class="td_02">-15</td>
+						<td class="td_02">
+						短信内容(彩信标题)前面需加签名，例如【XXX公司】，签名必须放在最前面，如果内容的编码错误，出现乱码，识别不出签名【XXX公司】，也会返回-15</td>
+					</tr>
+					<tr>
+						<td class="td_02">-16</td>
+						<td class="td_02">提交号码数量小于最小提交量限制</td>
+					</tr>
+					<tr>
+						<td class="td_02">-17</td>
+						<td class="td_02">查询速度过快</td>
+					</tr>
+					<tr>
+						<td class="td_02">-18</td>
+						<td class="td_02">tms文件格式错误</td>
+					</tr>
+					<tr>
+						<td class="td_02">-19</td>
+						<td class="td_02">无查看回执权限</td>
+					</tr>
+					<tr>
+						<td class="td_02">-20</td>
+						<td class="td_02">未开通接口</td>
+					</tr>
+					<tr>
+						<td class="td_02">-21</td>
+						<td class="td_02">系统繁忙</td>
+					</tr>
+					<tr>
+						<td class="td_02">-22</td>
+						<td class="td_02">短信内容(彩信标题)签名不正确</td>
+					</tr>
+					<tr>
+						<td class="td_02">-99</td>
+						<td class="td_02">连接失败</td>
+					</tr>
+					<tr>
+						<td class="td_02">-100</td>
+						<td class="td_02">系统内部错误</td>
+					</tr>
+				</table>
+				<!--表格描述 结束-->
+				</td>
+			</tr>
+		</table>
+		</td>
+	</tr>
+</table>
