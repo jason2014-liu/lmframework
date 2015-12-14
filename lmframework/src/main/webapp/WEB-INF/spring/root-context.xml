@@ -29,7 +29,9 @@
 		</property>
 		<property name="packagesToScan">
 			<list>
+			<!-- 
 				<value>com.lmstudio.framework.bss.bo</value>
+				 -->
 				<value>com.lmstudio.framework.hr.bo</value>
 			</list>
 		</property>

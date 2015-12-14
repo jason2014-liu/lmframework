@@ -125,6 +125,8 @@
 	<div data-options="region:'south',border:false"
 		style="height: 50px; background: #A9FACD; padding: 10px;">south
 		region</div>
-	<div data-options="region:'center',title:'Center'"></div>
+	<div data-options="region:'center',title:'Center'">
+		<iframe src="/hr/locationList.jsp"/>
+	</div>
 </body>
 </html>
