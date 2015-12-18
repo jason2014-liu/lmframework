@@ -108,6 +108,21 @@ public interface IBaseJpaDao {
 	 */
 	@SuppressWarnings("rawtypes")
 	public List findListByQL(String ql, Object... params);
+	
+	/**
+	 * 根据JPQL语句分页查询，返回页对象
+	 * 
+	 * @param jpql
+	 * @param parameterMap
+	 *            参数集合
+	 * @param pageNo
+	 *            当前页码
+	 * @param pageSize
+	 *            每页记录数
+	 * @return
+	 */
+	@SuppressWarnings("rawtypes")
+	public QueryResult findByJPQLWithPage(String jpql, Map<String, Object> parameterMap, int pageNo, int pageSize);
 
 
 }

@@ -10,6 +10,7 @@
 */
 package com.lmstudio.framework.bss.dao.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -17,12 +18,16 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
+import org.apache.commons.lang3.StringUtils;
+import org.hibernate.HibernateException;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.lmstudio.framework.bss.bo.BaseBo;
+import com.lmstudio.framework.bss.constants.BssConstants;
 import com.lmstudio.framework.bss.constants.ErrorCode;
 import com.lmstudio.framework.bss.dao.IBaseJpaDao;
+import com.lmstudio.framework.bss.dao.QueryResult;
 import com.lmstudio.framework.bss.exception.BssException;
 
 /**
@@ -119,6 +124,89 @@ public class BaseJpaDao implements IBaseJpaDao {
 		Query query = this.entityManager.createQuery(ql);
 		QLBuilder.setQueryParams(query, params);
 		return query.getResultList();
+	}
+
+	/**
+	 * 根据JPQL语句分页查询，返回页对象
+	 * 
+	 * @param jpql
+	 *            查询语句
+	 * @param parameterMap
+	 *            参数集合
+	 * @param pageNo
+	 *            当前页码
+	 * @param pageSize
+	 *            每页记录数
+	 * @return
+	 */
+	public QueryResult<Object> findByJPQLWithPage(String jpql, Map<String, Object> parameterMap, int pageNo,
+			int pageSize) {
+		if (StringUtils.isBlank(jpql)) {
+			throw new BssException(ErrorCode.DATA_QUERY_ERROR, "查询语句不能为空");
+		}
+		int start = (" " + jpql).toLowerCase().indexOf(" from ");
+		int end = jpql.toLowerCase().lastIndexOf("order by");
+		String countJPQL = "select count(*) " + (end < 0 ? jpql.substring(start) : jpql.substring(start, end));
+
+		try {
+			long count = this.countByJPQL(countJPQL, parameterMap);
+			// 如果存在记录,才继续查询明细
+			if (count > 0) {
+				if (pageNo < 1) {
+					pageNo = 1;
+				}
+				if (pageSize < 1) {
+					pageSize = BssConstants.PageSize;
+				}
+				Query query = entityManager.createQuery(jpql);
+				this.setParameters(query, parameterMap);
+
+				// 设置查询结果的结束记录数
+				query.setMaxResults(pageSize);
+				// 设置查询结果的开始记录数（从0开始计数）
+				int firstResult = (pageNo - 1) * pageSize;
+				query.setFirstResult(firstResult);
+
+				return new QueryResult<Object>(query.getResultList(), count, pageNo, pageSize);
+			} else {
+				return new QueryResult<Object>(new ArrayList<Object>(), count, pageNo, pageSize);
+			}
+		} catch (HibernateException ex) {
+			throw new BssException(ErrorCode.DATA_QUERY_ERROR, ex);
+		}
+	}
+
+	/**
+	 * 根据JPQL语句（使用聚合函数count）获取记录数
+	 * 
+	 * @param countJPQL
+	 * @param parameterMap
+	 *            参数集合
+	 * @return
+	 */
+	public int countByJPQL(String countJPQL, Map<String, Object> parameterMap) {
+		try {
+			Query query = entityManager.createQuery(countJPQL);
+			this.setParameters(query, parameterMap);
+			return Integer.parseInt(query.getSingleResult().toString());
+		} catch (HibernateException ex) {
+			throw new RuntimeException(ex);
+		}
+	}
+
+	/**
+	 * 内部方法，设置参数
+	 * 
+	 * @param query
+	 * @param parameterMap
+	 */
+	private void setParameters(Query query, Map<String, Object> parameterMap) {
+		if (parameterMap != null) {
+			for (String parameterName : parameterMap.keySet()) {
+				Object parameterValue = parameterMap.get(parameterName);
+				query.setParameter(parameterName, parameterValue);
+			}
+		}
 	}
 
 }

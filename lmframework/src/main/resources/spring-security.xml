@@ -20,19 +20,22 @@ http://www.springframework.org/schema/security/spring-security-3.1.xsd">
 	<security:authentication-manager>
 		<!-- The <authentication-provider>element creates a DaoAuthenticationProviderbean 
 			and the <user-service> element creates an InMemoryDaoImpl. -->
+			<!-- 
 		<security:authentication-provider user-service-ref="customUserDetailsService">
-		<!-- 
+		 -->
+		<security:authentication-provider>
 			<security:user-service>
 				<security:user name="jimi" password="jimispassword"
 					authorities="ROLE_USER, ROLE_ADMIN" />
 				<security:user name="bob" password="bobspassword"
 					authorities="ROLE_USER" />
 			</security:user-service>
-			 -->
+			
 		</security:authentication-provider>
 	</security:authentication-manager>
 	
+	<!-- 
 	<bean id="customUserDetailsService" class="com.lmstudio.framework.bss.security.CustomUserDetailsService"></bean>
-
+	 -->
 
 </beans>

@@ -126,7 +126,7 @@
 		style="height: 50px; background: #A9FACD; padding: 10px;">south
 		region</div>
 	<div data-options="region:'center',title:'Center'">
-		<iframe src="/hr/locationList.jsp"/>
+		<iframe src="hr/toLocationList" width="99%" height="99%"></iframe>
 	</div>
 </body>
 </html>
